@@ -1,0 +1,19 @@
+# IGNORAR GERAL E IDE
+.idea/
+*.iml
+
+# IGNORAR ARQUIVOS DE BUILD DO BACKEND (JAVA/MAVEN)
+/backend-module/target/
+/backend-module/*.jar
+
+# IGNORAR ARQUIVOS DE BUILD DO FRONTEND (NODE/ANGULAR)
+/frontend/bip-teste-integrado-ui/node_modules
+/frontend/bip-teste-integrado-ui/dist
+/frontend/bip-teste-integrado-ui/package-lock.json
+
+# IGNORAR ARQUIVOS DE IDE/CONFIGURAÇÃO DO FRONTEND
+/frontend/bip-teste-integrado-ui/.editorconfig
+/frontend/bip-teste-integrado-ui/.postcssrc.json
+/frontend/bip-teste-integrado-ui/.prettierignore
+/frontend/bip-teste-integrado-ui/.prettierrc.json
+/frontend/bip-teste-integrado-ui/eslint.config.js

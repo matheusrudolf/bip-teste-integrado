@@ -6,16 +6,28 @@ import jakarta.persistence.PersistenceContext;
 import java.math.BigDecimal;
 
 @Stateless
+@TransactionAttribute(TransactionAttributeType.Required)
 public class BeneficioEjbService {
 
     @PersistenceContext
     private EntityManager em;
 
     public void transfer(Long fromId, Long toId, BigDecimal amount) {
-        Beneficio from = em.find(Beneficio.class, fromId);
-        Beneficio to   = em.find(Beneficio.class, toId);
+        Beneficio from = em.find(Beneficio.class, fromId, LockModeType.PESSIMISTIC_WRITE);
+        Beneficio to   = em.find(Beneficio.class, toId, LockModeType.PESSIMISTIC_WRITE);
 
-        // BUG: sem validações, sem locking, pode gerar saldo negativo e lost update
+        if (from == null || to == null) {
+            throw new IllegalArgumentException("Conta de origem ou destino não existem!");
+        }
+
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Valor ínvalido para transferência!");
+        }
+
+        if (from.getValor().compareTo(amount)) {
+            throw new IllegalArgumentException("Saldo insuficiente para transferência!");
+        }
+
         from.setValor(from.getValor().subtract(amount));
         to.setValor(to.getValor().add(amount));
 
